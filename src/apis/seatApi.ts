@@ -7,14 +7,26 @@ export const getSeats = async () => {
   return res.data; // mảng SeatResponse
 };
 
+// export const createSeat = async (seat: {
+//   soGhe: string;
+//   loaiGhe: string;
+//   trangThai: string;
+// }) => {
+//   const res = await axios.post(API_URL, seat);
+//   return res.data;
+// };
 export const createSeat = async (seat: {
   soGhe: string;
   loaiGhe: string;
   trangThai: string;
 }) => {
-  const res = await axios.post(API_URL, seat);
-  return res.data;
+  console.log("Sending seat:", seat);
+  const res = await axios.post(API_URL, seat, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+  return res.data;  // <== phải có return ở đây
 };
+
 
 export const deleteSeat = async (id: string) => {
   const res = await axios.delete(`${API_URL}/${id}`);
