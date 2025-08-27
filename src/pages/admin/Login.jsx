@@ -70,6 +70,17 @@ export default function Login() {
             Đăng nhập
           </button>
         </form>
+
+        {/* Link đăng ký */}
+        <p className="text-center text-white mt-4">
+          Chưa có tài khoản?{" "}
+          <button
+            onClick={() => navigate("/admin/register")}
+            className="text-yellow-400 hover:underline"
+          >
+            Đăng ký
+          </button>
+        </p>
       </div>
     </div>
   );
