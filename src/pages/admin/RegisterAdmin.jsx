@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -8,7 +9,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -16,12 +17,26 @@ export default function Register() {
       return;
     }
 
-    // Giả lập lưu user vào localStorage
-    const user = { username, email, password };
-    localStorage.setItem("user", JSON.stringify(user));
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/movie/users/register",
+        {
+          username,
+          email,
+          password,
+        }
+      );
 
-    alert("Đăng ký thành công! Mời bạn đăng nhập.");
-    navigate("/"); // chuyển về trang login
+      if (res.data.message) {
+        alert(res.data.message); // hiển thị "Đăng ký thành công!"
+        navigate("/"); // quay về login
+      } else {
+        alert("Đăng ký thất bại!");
+      }
+    } catch (error) {
+      console.error("Lỗi đăng ký:", error);
+      alert(error.response?.data?.message || "Đăng ký thất bại!");
+    }
   };
 
   return (
@@ -29,7 +44,7 @@ export default function Register() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
       style={{
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0')", // ảnh rạp phim khác để phân biệt
+          "url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0')",
       }}
     >
       {/* Overlay mờ tối */}

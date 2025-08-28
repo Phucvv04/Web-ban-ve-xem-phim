@@ -1,18 +1,33 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (username === "admin" && password === "123") {
-      localStorage.setItem("token", "fake-token");
-      navigate("/admin/home");
-    } else {
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/movie/users/login",
+        {
+          username,
+          password,
+        }
+      );
+
+      // Nếu backend trả về token
+      if (res.data && res.data.username) {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        navigate("/admin/home");
+      } else {
+        alert("Đăng nhập thất bại!");
+      }
+    } catch (error) {
+      console.error("Lỗi đăng nhập:", error);
       alert("Sai tên đăng nhập hoặc mật khẩu!");
     }
   };
@@ -22,7 +37,7 @@ export default function Login() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
       style={{
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1743345358132-bc60a91716ea?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')", // Ảnh rạp phim
+          "url('https://images.unsplash.com/photo-1743345358132-bc60a91716ea?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
       }}
     >
       {/* Overlay mờ tối */}
