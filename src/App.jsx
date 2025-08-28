@@ -11,18 +11,21 @@ import Seats from "./pages/admin/Seats";
 import Tickets from "./pages/admin/Tickets";
 import Users from "./pages/admin/Users";
 import Statistics from "./pages/admin/Statistics";
+import RegisterAdmin from "./pages/admin/RegisterAdmin";
 function AppContent() {
   const location = useLocation();
-  const hiddenPaths = ["/admin/login"];
+  const hiddenPaths = ["/", "/admin/login", "/admin/register"];
   const hideLayout = hiddenPaths.includes(location.pathname);
 
   return (
     <>
       {!hideLayout && <Header />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
+
         <Route path="/admin/home" element={<Home />} />
         <Route path="/admin/login" element={<Login />} />
+        <Route path="/admin/register" element={<RegisterAdmin />} />
         <Route path="/admin/movies" element={<Movies />} />
         <Route path="/admin/cinemas" element={<Cinemas />} />
         <Route path="/admin/showtimes" element={<Showtimes />} />
